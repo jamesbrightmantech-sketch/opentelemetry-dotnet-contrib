@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <NetFrameworkMinimumSupportedVersion>net472</NetFrameworkMinimumSupportedVersion>
+    <!-- OmniSharp/VS Code requires TargetFrameworks to be in descending order for IntelliSense and analysis. -->
+    <TargetFrameworks>$(SupportedNetTargets)</TargetFrameworks>
+    <TargetFrameworks Condition="$(OS) == 'Windows_NT'">$(TargetFrameworks);$(NetFrameworkMinimumSupportedVersion)</TargetFrameworks>
+    <Description>Unit test project for AWS client instrumentation for OpenTelemetry.</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AWSSDK.DynamoDBv2" Version="4.0.0.2" />
+    <PackageReference Include="AWSSDK.Bedrock" Version="4.0.0" />
+    <PackageReference Include="AWSSDK.BedrockAgent" Version="4.0.0" />
+    <PackageReference Include="AWSSDK.BedrockAgentRuntime" Version="4.0.0" />
+    <PackageReference Include="AWSSDK.BedrockRuntime" Version="4.0.0" />
+    <PackageReference Include="AWSSDK.S3" Version="4.0.0" />
+    <PackageReference Include="OpenTelemetry.Exporter.InMemory" Version="$(OpenTelemetryCoreLatestVersion)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="$(RepoRoot)\src\OpenTelemetry.Instrumentation.AWS\OpenTelemetry.Instrumentation.AWS.csproj" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == '$(NetFrameworkMinimumSupportedVersion)'">
+    <Compile Remove="Tools\CustomWebResponse.cs" />
+    <Compile Remove="Tools\HttpResponseMessageBody.cs" />
+  </ItemGroup>
+
+</Project>
